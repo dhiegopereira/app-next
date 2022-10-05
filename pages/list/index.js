@@ -1,22 +1,9 @@
-import { useEffect, useState } from 'react';
-
-export default function Contact() {
-
-    const [list, setList] = useState([]);    
-
-    useEffect(() => {
-        const getList = async() => {
-            const body = await fetch('/api/user');
-            const json = await body.json();
-            setList(json);
-        }        
-        getList();
-    }, []);
+function List({data}) {    
     return (
         <>
         <h1>Usuários</h1>
         {
-            list.length && list.map(i => (
+            data.map(i => (
                 <p key={i.email}>{i.name}/{i.email}</p>
             ))
         }
@@ -24,3 +11,14 @@ export default function Contact() {
         
     )
 }
+
+export async function getStaticProps(context) {
+    
+        const data = require('../../utils/db.json')
+    
+    return {
+      props: {data}, // will be passed to the page component as props
+    }
+  }
+
+export default List;
